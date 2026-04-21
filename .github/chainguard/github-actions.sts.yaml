@@ -1,0 +1,10 @@
+# Trust policy: allow GitHub Actions on main branch to read contents across org repos
+issuer: https://token.actions.githubusercontent.com
+subject_pattern: "repo:whitworth-org/.*:ref:refs/heads/main"
+
+permissions:
+  contents: read
+
+repositories:
+  - bedrock
+  - .github

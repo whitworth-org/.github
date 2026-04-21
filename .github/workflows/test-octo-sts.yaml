@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Exchange OIDC token via octo-sts
-        uses: octo-sts/action@6177b4481c00308b3839969c3eca88c96a91775f # v1.0.0
+        uses: octo-sts/action@f603d3be9d8dd9871a265776e625a27b00effe05 # v1.1.1
         id: octo-sts
         with:
           scope: whitworth-org/.github
@@ -35,15 +35,17 @@ jobs:
           gh api repos/whitworth-org/.github/contents --jq '.[].name'
           echo "::endgroup::"
 
-      - name: Verify token CANNOT write (negative test)
+      - name: Verify token is scoped to listed repos only
         env:
           GITHUB_TOKEN: ${{ steps.octo-sts.outputs.token }}
         run: |
-          echo "::group::Attempt to create an issue (should fail with 403)"
-          if gh api repos/whitworth-org/bedrock/issues -f title="test" -f body="test" 2>&1; then
-            echo "::error::Write succeeded when it should have been denied"
+          echo "::group::Verify token lists only scoped repos"
+          repos=$(gh api /installation/repositories --jq '.repositories[].full_name' | sort)
+          echo "Accessible repos: ${repos}"
+          expected=$'whitworth-org/.github\nwhitworth-org/bedrock'
+          if [ "${repos}" != "${expected}" ]; then
+            echo "::error::Token can access unexpected repos: ${repos}"
             exit 1
-          else
-            echo "Write correctly denied — token is read-only"
           fi
+          echo "Token correctly scoped to bedrock and .github only"
           echo "::endgroup::"

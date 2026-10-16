@@ -5,9 +5,29 @@ version: 'v0.0.3'
 workflows:
     '.github/workflows/test-octo-sts.yaml':
         - 'octo-sts/action@v1.1.1'
+    '.github/workflows/zizmor.yml':
+        - 'actions/checkout@v7.0.1'
+        - 'zizmorcore/zizmor-action@v0.6.4'
 dependencies:
+    'actions/checkout@v7.0.1':
+        ref: 'v7.0.1'
+        commit: 'sha1-3d3c42e5aac5ba805825da76410c181273ba90b1'
+        owner_id: 44036562
+        repo_id: 197814629
+    'github/codeql-action@cdf488f595d80d6e07e03d4674febd5ab45fa938':
+        ref: 'v4.37.9'
+        commit: 'sha1-cdf488f595d80d6e07e03d4674febd5ab45fa938'
+        owner_id: 9919
+        repo_id: 259445878
     'octo-sts/action@v1.1.1':
         ref: 'v1.1.1'
         commit: 'sha1-f603d3be9d8dd9871a265776e625a27b00effe05'
         owner_id: 160145231
         repo_id: 749429568
+    'zizmorcore/zizmor-action@v0.6.4':
+        ref: 'v0.6.4'
+        commit: 'sha1-cc914d7f3750a2d13d75c7f184a1060aa0e9d482'
+        owner_id: 210636713
+        repo_id: 985558803
+        uses:
+            - 'github/codeql-action@cdf488f595d80d6e07e03d4674febd5ab45fa938'
